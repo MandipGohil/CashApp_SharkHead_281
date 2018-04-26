@@ -17,6 +17,7 @@ import (
 	"github.com/satori/go.uuid"
 	"gopkg.in/mgo.v2"
     "gopkg.in/mgo.v2/bson"
+	"github.com/rs/cors"
 )
 
 // MongoDB Config
@@ -33,12 +34,17 @@ var rabbitmq_pass = "guest"
 
 // NewServer configures and returns a Server.
 func NewServer() *negroni.Negroni {
+
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"},
+	})
 	formatter := render.New(render.Options{
 		IndentJSON: true,
 	})
 	n := negroni.Classic()
 	mx := mux.NewRouter()
 	initRoutes(mx, formatter)
+	n.Use(c)
 	n.UseHandler(mx)
 	return n
 }
@@ -121,7 +127,7 @@ func gumballUpdateHandler(formatter *render.Render) http.HandlerFunc {
 // API Create New Gumball Order
 func gumballNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		uuid := uuid.NewV4()
+		uuid, _ := uuid.NewV4()
     	var ord = order {
 					Id: uuid.String(),            		
 					OrderStatus: "Order Placed",
