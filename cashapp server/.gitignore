@@ -65,4 +65,3 @@ fabric.properties
 *.out
 
 bin/
-.idea/vcs.xml
