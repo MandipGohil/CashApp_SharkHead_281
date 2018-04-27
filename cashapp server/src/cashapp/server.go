@@ -16,7 +16,7 @@ import (
 	"github.com/unrolled/render"
 	"github.com/satori/go.uuid"
 	"gopkg.in/mgo.v2"
-    "gopkg.in/mgo.v2/bson"
+	"gopkg.in/mgo.v2/bson"
 	"github.com/rs/cors"
 )
 
@@ -35,23 +35,40 @@ var rabbitmq_pass = "guest"
 // NewServer configures and returns a Server.
 func NewServer() *negroni.Negroni {
 
+
+
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:3000"},
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "HEAD", "POST", "DELETE", "PUT"},
+		AllowedHeaders:   []string{"*"},
+		AllowCredentials: true,
+		Debug: 		  true,
 	})
 	formatter := render.New(render.Options{
 		IndentJSON: true,
 	})
 	n := negroni.Classic()
 	mx := mux.NewRouter()
+	//n.Use(c)
+	//mx.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
+	//	w.WriteHeader(http.StatusOK)
+	//	return
+	//}).Methods("OPTIONS")
 	initRoutes(mx, formatter)
-	n.Use(c)
-	n.UseHandler(mx)
+
+	handler := c.Handler(mx)
+	n.UseHandler(handler)
 	return n
 }
 
 // API Routes
 func initRoutes(mx *mux.Router, formatter *render.Render) {
 	mx.HandleFunc("/ping", pingHandler(formatter)).Methods("GET")
+	mx.HandleFunc("/signup", signupHandler(formatter)).Methods("POST")
+	//mx.HandleFunc("/signup", func(w http.ResponseWriter, r *http.Request) {
+	//	w.WriteHeader(http.StatusOK)
+	//	return
+	//}).Methods("OPTIONS")
 	mx.HandleFunc("/gumball", gumballHandler(formatter)).Methods("GET")
 	mx.HandleFunc("/gumball", gumballUpdateHandler(formatter)).Methods("PUT")
 	mx.HandleFunc("/order", gumballNewOrderHandler(formatter)).Methods("POST")
@@ -79,18 +96,18 @@ func pingHandler(formatter *render.Render) http.HandlerFunc {
 func gumballHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		session, err := mgo.Dial(mongodb_server)
-        if err != nil {
-                panic(err)
-        }
-        defer session.Close()
-        session.SetMode(mgo.Monotonic, true)
-        c := session.DB(mongodb_database).C(mongodb_collection)
-        var result bson.M
-        err = c.Find(bson.M{"SerialNumber" : "1234998871109"}).One(&result)
-        if err != nil {
-                log.Fatal(err)
-        }
-        fmt.Println("Gumball Machine:", result )
+		if err != nil {
+			panic(err)
+		}
+		defer session.Close()
+		session.SetMode(mgo.Monotonic, true)
+		c := session.DB(mongodb_database).C(mongodb_collection)
+		var result bson.M
+		err = c.Find(bson.M{"SerialNumber": "1234998871109"}).One(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Gumball Machine:", result)
 		formatter.JSON(w, http.StatusOK, result)
 	}
 }
@@ -98,29 +115,50 @@ func gumballHandler(formatter *render.Render) http.HandlerFunc {
 // API Update Gumball Inventory
 func gumballUpdateHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-    	var m gumballMachine
-    	_ = json.NewDecoder(req.Body).Decode(&m)		
-    	fmt.Println("Update Gumball Inventory To: ", m.CountGumballs)
+		var m gumballMachine
+		_ = json.NewDecoder(req.Body).Decode(&m)
+		fmt.Println("Update Gumball Inventory To: ", m.CountGumballs)
 		session, err := mgo.Dial(mongodb_server)
-        if err != nil {
-                panic(err)
-        }
-        defer session.Close()
-        session.SetMode(mgo.Monotonic, true)
-        c := session.DB(mongodb_database).C(mongodb_collection)
-        query := bson.M{"SerialNumber" : "1234998871109"}
-        change := bson.M{"$set": bson.M{ "CountGumballs" : m.CountGumballs}}
-        err = c.Update(query, change)
-        if err != nil {
-                log.Fatal(err)
-        }
-       	var result bson.M
-        err = c.Find(bson.M{"SerialNumber" : "1234998871109"}).One(&result)
-        if err != nil {
-                log.Fatal(err)
-        }        
-        fmt.Println("Gumball Machine:", result )
+		if err != nil {
+			panic(err)
+		}
+		defer session.Close()
+		session.SetMode(mgo.Monotonic, true)
+		c := session.DB(mongodb_database).C(mongodb_collection)
+		query := bson.M{"SerialNumber": "1234998871109"}
+		change := bson.M{"$set": bson.M{"CountGumballs": m.CountGumballs}}
+		err = c.Update(query, change)
+		if err != nil {
+			log.Fatal(err)
+		}
+		var result bson.M
+		err = c.Find(bson.M{"SerialNumber": "1234998871109"}).One(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println("Gumball Machine:", result)
 		formatter.JSON(w, http.StatusOK, result)
+	}
+}
+
+func signupHandler(formatter *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		//fmt.Println(req.Body)
+		//req.ParseForm()
+		////fmt.Println(req.Form)
+		//vars := mux.Vars(req)
+		//fmt.Println(vars)
+		var m SAD
+		err := json.NewDecoder(req.Body).Decode(&m)
+		if err != nil{
+			fmt.Println("error")
+			fmt.Println(err)
+			formatter.JSON(w,400,err.Error())
+			//return
+		}
+		log.Println(m)
+
+		formatter.JSON(w, http.StatusOK, struct{ Test string }{"API version 1.0 alive!"})
 	}
 }
 
@@ -128,16 +166,16 @@ func gumballUpdateHandler(formatter *render.Render) http.HandlerFunc {
 func gumballNewOrderHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		uuid, _ := uuid.NewV4()
-    	var ord = order {
-					Id: uuid.String(),            		
-					OrderStatus: "Order Placed",
+		var ord = order{
+			Id:          uuid.String(),
+			OrderStatus: "Order Placed",
 		}
 		if orders == nil {
 			orders = make(map[string]order)
 		}
 		orders[uuid.String()] = ord
 		queue_send(uuid.String())
-		fmt.Println( "Orders: ", orders )
+		fmt.Println("Orders: ", orders)
 		formatter.JSON(w, http.StatusOK, ord)
 	}
 }
@@ -147,18 +185,18 @@ func gumballOrderStatusHandler(formatter *render.Render) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		params := mux.Vars(req)
 		var uuid string = params["id"]
-		fmt.Println( "Order ID: ", uuid )
-		if uuid == ""  {
-			fmt.Println( "Orders:", orders )
+		fmt.Println("Order ID: ", uuid)
+		if uuid == "" {
+			fmt.Println("Orders:", orders)
 			var orders_array [] order
 			for key, value := range orders {
-    			fmt.Println("Key:", key, "Value:", value)
-    			orders_array = append(orders_array, value)
+				fmt.Println("Key:", key, "Value:", value)
+				orders_array = append(orders_array, value)
 			}
 			formatter.JSON(w, http.StatusOK, orders_array)
 		} else {
 			var ord = orders[uuid]
-			fmt.Println( "Order: ", ord )
+			fmt.Println("Order: ", ord)
 			formatter.JSON(w, http.StatusOK, ord)
 		}
 	}
@@ -170,42 +208,42 @@ func gumballProcessOrdersHandler(formatter *render.Render) http.HandlerFunc {
 
 		// Open MongoDB Session
 		session, err := mgo.Dial(mongodb_server)
-        if err != nil {
-                panic(err)
-        }
-        defer session.Close()
-        session.SetMode(mgo.Monotonic, true)
-        c := session.DB(mongodb_database).C(mongodb_collection)
+		if err != nil {
+			panic(err)
+		}
+		defer session.Close()
+		session.SetMode(mgo.Monotonic, true)
+		c := session.DB(mongodb_database).C(mongodb_collection)
 
-       	// Get Gumball Inventory 
-        var result bson.M
-        err = c.Find(bson.M{"SerialNumber" : "1234998871109"}).One(&result)
-        if err != nil {
-                log.Fatal(err)
-        }
+		// Get Gumball Inventory
+		var result bson.M
+		err = c.Find(bson.M{"SerialNumber": "1234998871109"}).One(&result)
+		if err != nil {
+			log.Fatal(err)
+		}
 
- 		var count int = result["CountGumballs"].(int)
-        fmt.Println("Current Inventory:", count )
+		var count int = result["CountGumballs"].(int)
+		fmt.Println("Current Inventory:", count)
 
 		// Process Order IDs from Queue
 		var order_ids []string = queue_receive()
 		for i := 0; i < len(order_ids); i++ {
 			var order_id = order_ids[i]
 			fmt.Println("Order ID:", order_id)
-			var ord = orders[order_id] 
+			var ord = orders[order_id]
 			ord.OrderStatus = "Order Processed"
 			orders[order_id] = ord
 			count -= 1
 		}
-		fmt.Println( "Orders: ", orders , "New Inventory: ", count)
+		fmt.Println("Orders: ", orders, "New Inventory: ", count)
 
 		// Update Gumball Inventory
-		query := bson.M{"SerialNumber" : "1234998871109"}
-        change := bson.M{"$set": bson.M{ "CountGumballs" : count}}
-        err = c.Update(query, change)
-        if err != nil {
-                log.Fatal(err)
-        }
+		query := bson.M{"SerialNumber": "1234998871109"}
+		change := bson.M{"$set": bson.M{"CountGumballs": count}}
+		err = c.Update(query, change)
+		if err != nil {
+			log.Fatal(err)
+		}
 
 		// Return Order Status
 		formatter.JSON(w, http.StatusOK, orders)
@@ -214,7 +252,7 @@ func gumballProcessOrdersHandler(formatter *render.Render) http.HandlerFunc {
 
 // Send Order to Queue for Processing
 func queue_send(message string) {
-	conn, err := amqp.Dial("amqp://"+rabbitmq_user+":"+rabbitmq_pass+"@"+rabbitmq_server+":"+rabbitmq_port+"/")
+	conn, err := amqp.Dial("amqp://" + rabbitmq_user + ":" + rabbitmq_pass + "@" + rabbitmq_server + ":" + rabbitmq_port + "/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
@@ -224,11 +262,11 @@ func queue_send(message string) {
 
 	q, err := ch.QueueDeclare(
 		rabbitmq_queue, // name
-		false,   // durable
-		false,   // delete when unused
-		false,   // exclusive
-		false,   // no-wait
-		nil,     // arguments
+		false,          // durable
+		false,          // delete when unused
+		false,          // exclusive
+		false,          // no-wait
+		nil,            // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
 
@@ -248,7 +286,7 @@ func queue_send(message string) {
 
 // Receive Order from Queue to Process
 func queue_receive() []string {
-	conn, err := amqp.Dial("amqp://"+rabbitmq_user+":"+rabbitmq_pass+"@"+rabbitmq_server+":"+rabbitmq_port+"/")
+	conn, err := amqp.Dial("amqp://" + rabbitmq_user + ":" + rabbitmq_pass + "@" + rabbitmq_server + ":" + rabbitmq_port + "/")
 	failOnError(err, "Failed to connect to RabbitMQ")
 	defer conn.Close()
 
@@ -258,22 +296,22 @@ func queue_receive() []string {
 
 	q, err := ch.QueueDeclare(
 		rabbitmq_queue, // name
-		false,   // durable
-		false,   // delete when usused
-		false,   // exclusive
-		false,   // no-wait
-		nil,     // arguments
+		false,          // durable
+		false,          // delete when usused
+		false,          // exclusive
+		false,          // no-wait
+		nil,            // arguments
 	)
 	failOnError(err, "Failed to declare a queue")
 
 	msgs, err := ch.Consume(
-		q.Name, // queue
-		"orders",     // consumer
-		true,   // auto-ack
-		false,  // exclusive
-		false,  // no-local
-		false,  // no-wait
-		nil,    // args
+		q.Name,   // queue
+		"orders", // consumer
+		true,     // auto-ack
+		false,    // exclusive
+		false,    // no-local
+		false,    // no-wait
+		nil,      // args
 	)
 	failOnError(err, "Failed to register a consumer")
 
@@ -288,17 +326,16 @@ func queue_receive() []string {
 
 	err = ch.Cancel("orders", false)
 	if err != nil {
-	    log.Fatalf("basic.cancel: %v", err)
+		log.Fatalf("basic.cancel: %v", err)
 	}
 
 	var order_ids_array []string
 	for n := range order_ids {
-    	order_ids_array = append(order_ids_array, n)
-    }	
+		order_ids_array = append(order_ids_array, n)
+	}
 
-    return order_ids_array
+	return order_ids_array
 }
-
 
 /*
 

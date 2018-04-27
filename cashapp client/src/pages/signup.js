@@ -37,9 +37,9 @@ class Signup extends Component {
         let signUpAPI = "http://localhost:8080/signup"
         let apiPayload = {
 
-            email: this.refs.inputEmail.value,
-            username: this.refs.inputUsername.value,
-            password: this.refs.inputPassword.value,
+            "Email": this.refs.inputEmail.value,
+            "Username": this.refs.inputUsername.value,
+            "Password": this.refs.inputPassword.value,
 
         }
 

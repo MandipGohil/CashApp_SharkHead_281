@@ -16,5 +16,14 @@ type order struct {
 	Id             	string 	
 	OrderStatus 	string	
 }
+type SAD struct {
+	Email	string
+	Password	string
+	Username	string
+}
 
 var orders map[string] order
+
+//`json: "email"`
+//`json: "password"`
+//`json: "username"`
