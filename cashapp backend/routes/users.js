@@ -3,6 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
 const saltRounds = 5;
+const redis = require('redis');
 //var cors = require('cors');
 var mongoose = require('mongoose');
 //require('./passport')(passport);

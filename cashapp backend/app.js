@@ -31,8 +31,8 @@ var corsOptions = {
 
 var index = require('./routes/index');
 var users = require('./routes/users');
-var post = require('./routes/post_project');
-
+//var post = require('./routes/post_project');
+var debitcard=require('./routes/debitcard');
 var profile = require('./routes/profile');
 var bids = require('./routes/bids');
 var account = require('./routes/account');
@@ -80,7 +80,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/post', post);
+//app.use('/post', post);
+app.use('/debitcard',debitcard);
 app.use('/bids',bids);
 app.use('/profile', profile);
 app.use('/account', account);
