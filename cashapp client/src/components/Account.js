@@ -66,7 +66,7 @@ class Account extends Component {
                    <td className="text-left">{index+1}</td>
                    <td className="text-left">{balance._id}</td>
                    <td className="text-left">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{balance.Amount}</td>
-                   <td className="text-left">{balance.Addedby}</td>
+                   <td className="text-left">{balance.email_address}</td>
                    
                    
                    </tr>
@@ -131,6 +131,20 @@ class Account extends Component {
                                 Withdraw Money
                             </button>
                             </Link>
+
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            <Link to="/payment"> <button
+                                className="btn btn-primary"
+                                type="button"
+                                  //since this is child to NewerHomePage
+                                                                                     //it cannot change state directly so using
+                                                                                     //props to pass it to main class(NeweHomePage)
+                                                                                     //onclick will pass the current state to main class
+                                
+                                >  
+                                Send Money
+                            </button>
+                            </Link>
                             </div>
 
                         </form>
@@ -145,8 +159,8 @@ class Account extends Component {
         <th>#</th>
         <th>Transaction ID</th>
         <th>Transaction Amount</th>
+        <th>Added /Deducted By</th>
         
-        <th>Added By/Deducted By</th>
 </tr>
     </thead>
     <tbody>

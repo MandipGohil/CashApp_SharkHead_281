@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Image from'./slider.jpg';
 import {Link,withRouter,Route} from 'react-router-dom';
 import Login from'./Login';
-import Image2 from'./axt_profile.JPG';
+import Image2 from'./cashapp.png';
 //import { Route, withRouter } from 'react-router-dom';
 import Image1 from'./image1.jpg';
 class Jumbotron extends Component {
@@ -46,7 +46,7 @@ class Jumbotron extends Component {
 
 <div className="text-center">
 
-<h2>Hire expert freelancers for any job, online</h2>
+<h2></h2>
 
     </div>
 
@@ -54,10 +54,10 @@ class Jumbotron extends Component {
               <h1><font color="dodgerblue"></font></h1> 
               <br/>
               <button  className="btn btn-outline-primary" onClick={() => {
-                        window.location.href="http://localhost:3001/postproject";
+                        window.location.href="http://localhost:3001/login";
                             
                         }}>
-                            I want to Hire
+                            Deposit Money
                         </button>
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -65,7 +65,7 @@ class Jumbotron extends Component {
                             window.location.href="http://localhost:3001/login";
                             
                         }}>
-                        I want to Work
+                        Withdraw Money
                         </button>  
               
               </div>

@@ -11,14 +11,16 @@ class Signup extends Component {
     state = {
         email_address: '',
         username : '',
-        password: ''
+        password: '',
+        debitcard:''
     };
 
     componentWillMount(){
         this.setState({
             email_address: '', 
             username : '',              //It is mounted before render method but what is the main usage?
-            password: ''
+            password: '',
+            debitcard:''
         });
     }
 
@@ -81,6 +83,21 @@ class Signup extends Component {
                                 }}
                             />
                         </div>
+                        
+                        <input
+                                className="form-control"
+                                type="text"
+                                label="Username"
+                                placeholder="Enter CardNumber"
+                                value={this.state.debitcard}
+                                onChange={(event) => {      //setState is to change the state on some input
+                                    this.setState({
+                                        debitcard: event.target.value
+                                    });
+                                }}
+                                
+                            />
+                            <br/>
                         <div className="form-group">
                             <button
                                 className="btn btn-primary"

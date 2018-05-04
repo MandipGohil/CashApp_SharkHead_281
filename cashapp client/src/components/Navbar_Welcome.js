@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Image from './freelancer.jpg';
+import Image from './cashapp.png';
 
 class Navbar_Welcome extends Component {
   static propTypes = {
@@ -35,17 +35,11 @@ componentWillMount(){
 
   
   <ul className="navbar-nav">
+   
+    
+    
     <li className="nav-item">
-    <a className="nav-link" href="http://localhost:3001/profile">Profile</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://localhost:3001/browseprojects">Browse Projects</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://localhost:3001/postproject">Post Project</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://localhost:3001/welcome">My Projects</a>
+      <a className="nav-link" href="http://localhost:3001/account">My Balance</a>
     </li>
     <li className="nav-item">
       <a className="nav-link" href="http://localhost:3001/account">Account</a>

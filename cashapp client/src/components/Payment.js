@@ -26,9 +26,7 @@ class Payment extends Component {
             card: '',
         expiry_month:'',
         expiry_year:'',
-        CVV: '',
-        Name:localStorage.getItem('receiver'),
-        amount:localStorage.getItem('bid_amt')
+        CVV: ''
         });
         
             API.getBalance()
@@ -76,12 +74,12 @@ class Payment extends Component {
             <br/>
             <br/>
             <div className="form-group owner ">
-                <label for="owner">Freelancer</label>
+                <label for="owner">Send to</label>
                 <input type="text" class="form-control" id="owner"
-                value={localStorage.getItem('receiver')}
+                value={this.state.Name}
                  onChange={(event) => {      //setState is to change the state on some input
                     this.setState({
-                        Name: localStorage.getItem('receiver')
+                        Name: event.target.value
                     });
                 }}></input>
             </div>
@@ -91,10 +89,10 @@ class Payment extends Component {
             <div className="form-group" id="card-number-field">
                 <label for="cardNumber">Amount</label>
                 <input type="text" class="form-control" id="cardNumber"
-                value={localStorage.getItem('bid_amt')}
+                value={this.state.Amount}
                  onChange={(event) => {      //setState is to change the state on some input
                     this.setState({
-                    amount: localStorage.getItem('bid_amt')
+                    amount: event.target.value
                     });
                 }}></input>
             </div>

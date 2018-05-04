@@ -116,7 +116,7 @@ class NewerHomePage extends Component {
                     console.log("states changed");
                     //window.location.href="http://localhost:3001/welcome";
                     //window.location.replace="/welcome";
-                    this.props.history.push("/welcome");
+                    this.props.history.push("/account");
                 
                 } 
                 else if (result === "Please fill out fields") {
@@ -133,7 +133,7 @@ class NewerHomePage extends Component {
                         isLoggedIn: false,
                         message: "Please enter correct credentials"
                     });
-                    this.props.history.push("/login");
+                    this.props.history.push("/");
                 }
                     else
                     {
@@ -159,7 +159,7 @@ class NewerHomePage extends Component {
                                 username: userdata.username
                             });
                             console.log("yeaah its signup successfull..")         
-                            this.props.history.push("/");
+                            this.props.history.push("/login");
                         } 
                         else if (result === "Signup unsuccessful") {
                             this.setState({
@@ -547,25 +547,7 @@ class NewerHomePage extends Component {
                         logout={this.logout}/>
                         <Message message={this.state.message}/>
                         <Account/>
-                        <div height="100px" width="100px">
-                        <PieChart
                         
-                         
-                       
-  slices={[
-    { 
-      color: '#C8C3C2',
-      value: this.state.incoming,
-      
-    },
-    {
-        
-      color: '#090200',
-      value: -this.state.outgoing,
-    },
-  ]}
-/>
-</div>
                         
                     </div>
                 )}/>

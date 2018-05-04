@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Image from './freelancer.jpg';
+import Image from './cashapp.png';
 import '../App.css'
 class Navbar extends Component {
 
@@ -20,9 +20,7 @@ class Navbar extends Component {
     <li className="nav-item">
       <a className="nav-link" href="http://localhost:3001/signup">Signup</a>
     </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://localhost:3001/postproject">Post Project</a>
-    </li>
+   
     
 
    

@@ -30,10 +30,10 @@ router.post('/addmoney', function(req,res)
  
   //var email= req.param('email_address'); 
   var addmoney1=new addmoney();  
-  addmoney1.Card_Number=req.body.card;
+  //addmoney1.Card_Number=req.body.card;
   addmoney1.email_address=req.session.email;
-  addmoney1.CVV=req.body.CVV;
-  addmoney1.Addedby=req.session.email;
+  //addmoney1.CVV=req.body.CVV;
+  //addmoney1.Addedby=req.session.email;
   addmoney1.Amount=req.body.amount;
   console.log("Parameters taken successfully");
   addmoney1.save(function(err, insertedproj)
@@ -73,10 +73,10 @@ router.post('/paymoney', function(req,res)
 
   
   var addmoney12=new addmoney();  
-  addmoney12.Card_Number=req.body.card;
+  //addmoney12.Card_Number=req.body.card;
   addmoney12.email_address=req.body.Name;
-  addmoney12.CVV=req.body.CVV;
-  addmoney12.Addedby=req.session.email;
+  //addmoney12.CVV=req.body.CVV;
+  //addmoney12.Addedby=req.session.email;
   addmoney12.Amount=req.body.amount;
   console.log("Parameters taken successfully");
   addmoney12.save(function(err, insertedproj)
@@ -192,7 +192,7 @@ router.get('/getBalance',function(req,res)
    console.log(req.session.email);
    addmoney2=new addmoney();
   //newproj.email_address=req.body.email_address;
-   console.log(newproj.email_address);
+   //console.log(newproj.email_address);
 
   console.log('Retreive balance and history API');
   addmoney.find({'email_address':req.session.email})
