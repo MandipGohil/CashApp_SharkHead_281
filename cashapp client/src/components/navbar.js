@@ -1,54 +1,40 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route} from 'react-router-dom'
-import axios from 'axios';
-import '../App.css';
+import PropTypes from 'prop-types';
+import Image from './freelancer.jpg';
+import '../App.css'
+class Navbar extends Component {
 
+   
 
-class NavBar extends Component {
     render() {
         return (
-            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                {/*<a href="/" class="navbar-brand ml-10"><img*/}
-                    {/*src="https://www.lending-express.com/lending-webapp/academy/wp-content/uploads/2017/03/xfreelancer-logo.png.pagespeed.ic.dSElcoH5Eg.png"*/}
-                    {/*width="175" height="60" alt="Freelancer"/></a>*/}
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor03"
-                        aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+            <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
 
-                <div class="collapse navbar-collapse" id="navbarColor03">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="true" aria-expanded="false">Hire Freelancers</a>
-                            <div className="dropdown-menu" x-placement="bottom-start">
-                                <a class="dropdown-item" href="./post">Post a project</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="true" aria-expanded="false">Find work</a>
-                            <div className="dropdown-menu" x-placement="bottom-start">
-                                <a class="dropdown-item" href="#">Browse projects</a>
-                            </div>
-                        </li>
-                        <li class="nav-item ml-15">
+  <a className="navbar-brand" href="http://localhost:3001"><img src={Image} height ='60' width='130'></img></a>
 
-                            <a class="nav-link" href="./login">Log In</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./signup">Sign Up</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" class="btn btn-warning font-weight-bold text-white" href="./post">Post a
-                                project</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
+  
+  <ul className=" nav navbar-nav navbar-right">
+    <li className="nav-item ">
+    <a className="nav-link " href="http://localhost:3001/login">Login</a>
+    </li>
+    <li className="nav-item">
+      <a className="nav-link" href="http://localhost:3001/signup">Signup</a>
+    </li>
+    <li className="nav-item">
+      <a className="nav-link" href="http://localhost:3001/postproject">Post Project</a>
+    </li>
+    
+
+   
+   
+  </ul>
+</nav>
+
+  
+
 
         );
     }
 }
 
-export default NavBar;
+export default Navbar;
