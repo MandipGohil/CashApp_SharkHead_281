@@ -73,6 +73,27 @@ router.post('/signup', function(req,res)
 
   
   console.log("Parameters taken successfully");
+  let apiPayload={
+    ID:req.body.email_address,
+    Value:{
+      password:req.body.password,
+      username:req.body.username
+
+  }
+}
+
+let GoUrl="http://localhost:4000"
+
+axios.post(GoUrl,apiPayload)
+.then((res)=>{
+  if(err){
+    res.json("Signup Unsuccessful");
+  }
+  else{
+    res.json("Signup Successful");
+  }
+})
+
   var length=newusers.password.length;
   newusers.save(function(err,user)
 {
