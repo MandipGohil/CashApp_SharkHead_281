@@ -9,7 +9,7 @@ var mongoose = require('mongoose');
 //var kafka = require('../kafka/client');
 var users=require('../models/users.js');
 var user_details=require('../models/userdetails.js');
-var db='mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var db='mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 mongoose.Promise=global.Promise;
 mongoose.connect(db,function(err)
 {

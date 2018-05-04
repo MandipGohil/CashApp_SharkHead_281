@@ -8,7 +8,7 @@ var mongoose = require('mongoose');
 var assignproject=require('../models/assignproject.js')
 var bid1=require('../models/bid.js')
 
-var db='mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var db='mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 mongoose.Promise=global.Promise;
 mongoose.connect(db,function(err)
 {

@@ -3,7 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
 const saltRounds = 5;
-const redis = require('redis');
+//const redis = require('redis');
 //var cors = require('cors');
 var mongoose = require('mongoose');
 //require('./passport')(passport);
@@ -13,8 +13,8 @@ var passport = require('passport')
 
 var users=require('../models/users.js');
 var user_details=require('../models/userdetails.js');
-var mongoSessionURL = 'mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
-var db='mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var mongoSessionURL = 'mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
+var db='mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 mongoose.Promise=global.Promise;
 mongoose.connect(db,function(err)
 {
@@ -64,10 +64,11 @@ router.get('/userdetails',function(req,res)
 router.post('/signup', function(req,res)
 {
   console.log("Signup API called");
-  var newusers=new users
-    newusers.email_address = req.body.email_address,
-    newusers.username= req.body.username,
-    newusers.password= req.body.password
+  var newusers=new users;
+    newusers.email_address = req.body.email_address;
+    newusers.username= req.body.username;
+    newusers.password= req.body.password;
+    newusers.debitcard=req.body.debitcard;
     
 
   
@@ -78,6 +79,7 @@ router.post('/signup', function(req,res)
   
   if(err)
   {
+    console.log(err);
     console.log("Error received from ")
     result="Signup unsuccessful";
     res.json(result);
@@ -125,7 +127,7 @@ router.post('/login', function(req,res)
   console.log("Login API called");
   var newusers1=new users;
   newusers1.email_address = req.body.email_address;
-  newusers1.username= req.body.username;
+  
   newusers1.password= req.body.password;
   console.log(req.body.email_address);
   console.log(req.body.password);

@@ -1,6 +1,6 @@
 var passport1 = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var mongoURL = 'mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var mongoURL = 'mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 //var kafka = require('./kafka/client');
 
 module.exports = function(passport) {
