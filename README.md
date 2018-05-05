@@ -73,7 +73,9 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 * Went through multiple project ideas and discussed each one.
 * Need to distribute tasks related to development to team members leveraging expertise knowledge.
 * Discussed how each member's individual GO API would integrate into the project.
->Number of meeting hours this week: 2
+>Agenda: Road-map for Project and Task Distribution 
+>(Number of meeting hours this week: 2)
+
 ## Week 2:
 * Finally agreed on Cash App prototype.
 * Finished wrapper API individually for database clusters.
@@ -81,6 +83,7 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 * Started coding for back-end.
 >Agenda: To select the Application. Talk about API Document. Make Kanban Board to get the project done in desire time line.
 >(Number of meeting hours this week: 2)
+
 ## Week 3:
 * Created a design architecture.
 * Discussed how the functionalities will split.
@@ -88,6 +91,7 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 * GO program setup and client connectivity.
 * Front-end in React finished.
 >Number of meeting hours this week: 3
+
 ## Week 4:
 * UI Improvements.
 * Finished all the functionalities.
@@ -96,7 +100,7 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 * Connected MongoDB to maintain session.
 * Added load balancers.
 >Number of meeting hours this week: 5
->
+
 ## Week 5:
 * Finished writing the Project Journal.
 * Tested the performance of the Cash App prototype.
