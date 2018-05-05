@@ -73,7 +73,6 @@ router.post('/paymoney', function (req, res) {
         // console.log(req.body);
 
 
-
         let apiPayload = {
             Key: req.session.email
         };
@@ -87,79 +86,142 @@ router.post('/paymoney', function (req, res) {
                 console.log("Go API hit");
                 console.log(result.data);
 
-                apiPayload.Value = {
-                    ...result.data.Value,
-                    balance: req.body.amount
-                }
-                console.log(apiPayload);
-                let GoUrl = "http://52.53.126.123:3000/redis_set";
+                let givenBy = result.data;
+
+                // console.log(apiPayload);
+                // get the user to send him
+                let apiPayload2 = {
+                    Key: req.body.Name
+                };
+                let GoUrl = "http://52.53.126.123:3000/redis_get";
 
                 axios.post(GoUrl, apiPayload)
                     .then((result) => {
-                        console.log("Go API hit");
                         console.log(result.data);
-                        res.json("Payment posted sucessfully");
+
+                        let givenTo = result.data;
+
+                        if (givenBy.Value.balance > 0) {
+                            if (req.body.amount > givenBy.Value.balance) {
+                                let GoUrl = "http://52.53.126.123:3000/redis_set";
+
+                                let saveGiveTo = {
+                                    Key : givenTo.Key,
+                                    Value: {
+                                        ...givenTo.Value,
+                                        balance: givenTo.Value.balance + req.body.amount
+                                    }
+                                };
+                                axios.post(GoUrl, saveGiveTo)
+                                    .then((result) => {
+                                        console.log(result.data);
+                                        res.json("Payment posted sucessfully");
+                                    })
+                            } else {
+                                let GoUrl = "http://52.53.126.123:3000/redis_set";
+
+                                let saveGiveBy = {
+                                    Key : givenBy.Key,
+                                    Value: {
+                                        ...givenBy.Value,
+                                        balance: givenBy.Value.balance - req.body.amount
+                                    }
+                                };
+                                let saveGiveTo = {
+                                    Key : givenTo.Key,
+                                    Value: {
+                                        ...givenTo.Value,
+                                        balance: givenTo.Value.balance + req.body.amount
+                                    }
+                                };
+                                axios.post(GoUrl, saveGiveTo)
+                                    .then((result) => {
+                                        console.log(result.data);
+                                        axios.post(GoUrl, saveGiveBy)
+                                            .then((result) => {
+                                                console.log(result.data);
+                                                res.json("Payment posted sucessfully");
+                                            })
+                                    })
+
+                            }
+                        } else {
+                            let GoUrl = "http://52.53.126.123:3000/redis_set";
+
+                            let saveGiveTo = {
+                                Key : givenTo.Key,
+                                Value: {
+                                    ...givenTo.Value,
+                                    balance: givenTo.Value.balance + req.body.amount
+                                }
+                            };
+                            axios.post(GoUrl, saveGiveTo)
+                                .then((result) => {
+                                    console.log(result.data);
+                                    res.json("Payment posted sucessfully");
+                                })
+                        }
+
                     })
             })
             .catch(err => {
                 console.log(err);
                 res.json("Unsuccessful");
 
-            })
+            });
 
         //var email= req.param('email_address');
 
-
-
-        var currentbalance = req.body.currentbalance;
-        var amount = req.body.amount;
-        if (currentbalance >= amount) {
-
-
-            var addmoney12 = new addmoney();
-            //addmoney12.Card_Number=req.body.card;
-            addmoney12.email_address = req.body.Name;
-            //addmoney12.CVV=req.body.CVV;
-            //addmoney12.Addedby=req.session.email;
-            addmoney12.Amount = req.body.amount;
-            console.log("Parameters taken successfully");
-            addmoney12.save(function (err, insertedproj) {
-                if (err) {
-                    console.log("Data not inserted into project collection");
-                    res.json("Payment Posted unsuccessfully");
-                }
-                else {
-                    console.log(req.body);
-                    var addmoney123 = new addmoney();
-                    addmoney123.Card_Number = req.body.card;
-                    addmoney123.email_address = req.session.email;
-                    addmoney123.CVV = req.body.CVV;
-                    addmoney123.Addedby = req.body.Name;
-                    addmoney123.Amount = -req.body.amount;
-                    console.log(addmoney123.Card_Number);
-                    console.log(addmoney123.email_address);
-                    console.log(addmoney123.CVV);
-                    console.log(addmoney123.Addedby);
-                    console.log(addmoney123.Amount);
-
-
-                    console.log("Parameters taken successfully");
-                    addmoney123.save(function (err, insertedproj) {
-                        if (err) {
-                            console.log("Data not inserted into project collection");
-                            res.json("Payment Posted unsuccessfully");
-                        }
-                        else {
-                            res.json("Payment posted sucessfully");
-                            console.log("Payment posted sucessfully");
-                        }
-                    })
-                }
-            })
-        }
-        else {
-            res.json("Payment Failed due to low balance");
-        }
+        //
+        // var currentbalance = req.body.currentbalance;
+        // var amount = req.body.amount;
+        // if (currentbalance >= amount) {
+        //
+        //
+        //     var addmoney12 = new addmoney();
+        //     //addmoney12.Card_Number=req.body.card;
+        //     addmoney12.email_address = req.body.Name;
+        //     //addmoney12.CVV=req.body.CVV;
+        //     //addmoney12.Addedby=req.session.email;
+        //     addmoney12.Amount = req.body.amount;
+        //     console.log("Parameters taken successfully");
+        //     addmoney12.save(function (err, insertedproj) {
+        //         if (err) {
+        //             console.log("Data not inserted into project collection");
+        //             res.json("Payment Posted unsuccessfully");
+        //         }
+        //         else {
+        //             console.log(req.body);
+        //             var addmoney123 = new addmoney();
+        //             addmoney123.Card_Number = req.body.card;
+        //             addmoney123.email_address = req.session.email;
+        //             addmoney123.CVV = req.body.CVV;
+        //             addmoney123.Addedby = req.body.Name;
+        //             addmoney123.Amount = -req.body.amount;
+        //             console.log(addmoney123.Card_Number);
+        //             console.log(addmoney123.email_address);
+        //             console.log(addmoney123.CVV);
+        //             console.log(addmoney123.Addedby);
+        //             console.log(addmoney123.Amount);
+        //
+        //
+        //             console.log("Parameters taken successfully");
+        //             addmoney123.save(function (err, insertedproj) {
+        //                 if (err) {
+        //                     console.log("Data not inserted into project collection");
+        //                     res.json("Payment Posted unsuccessfully");
+        //                 }
+        //                 else {
+        //                     res.json("Payment posted sucessfully");
+        //                     console.log("Payment posted sucessfully");
+        //                 }
+        //             })
+        //         }
+        //     })
+        // }
+        // else {
+        //     res.json("Payment Failed due to low balance");
+        // }
 
 
     }
