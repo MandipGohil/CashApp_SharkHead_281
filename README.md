@@ -9,12 +9,12 @@
 + Mandipsinh Gohil
 + Manikant Prasad
 
-## Important Links
+### Important Links
 * <a href="https://bit.ly/2JyJyBR" target="_blank">Sprint Task Sheet</a>
 * <a href="https://bit.ly/2JUna6p" target="_blank">Team Kanban Board</a>
 
 
-# About
+# Project idea:
 
 ## Cash App prototype
 
@@ -23,9 +23,9 @@ Cash App is a seamless way to send money to anyone using just their email addres
 
 ## Project Architecture Diagram:
 <img src="https://raw.githubusercontent.com/nguyensjsu/team281-sharkhead/master/Design/Design%20Architecture.jpg?token=AiMCxMazM_qtTehiIfeAZQlpN-T0cAeHks5a9iNdwA%3D%3D">
----
 
-> The front-end is developed in React which is hosted on Heroku. The back-end developed using NodeJS is divided in two ec2 instances, to split the functionalities. The login and signup functionality runs on one node and the transaction in another. Each of the functionalities are connected to each member's GO API which allows it to interact with the redis database in each cluster. The sessions are maintained in MongoDB on mLabs.
+
+> The front-end is developed in React which is hosted on Heroku. The back-end developed using NodeJS is divided in two ec2 instances, to split the functionalities. The login and signup functionality runs on one node and the transaction in another. Each of the functionalities are connected to each member's GO API which allows it to interact with the redis database in each cluster. The sessions are maintained in MongoDB on mLabs. Load balancers are added to make the system scalable.
  
 ## CAP Theorem
 
@@ -97,8 +97,29 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 >Number of meeting hours this week: 5
 ## Week 5:
 * Finished writing the Project Journal.
+* Tested the performance of the Cash App prototype.
 >Number of meeting hours this week: 1
 
+# Challenges faced:
+* Creating the design of the system.
+* Set up the tools required for the application to work.
+* Integrating front-end and back-end.
+* Integrating GO APIs.
+* Some conflicts in the code took significant amount of time to resolve.
+* How to achieve functionality split.
+* Code integration for Node and GO.
+---
+#### References, tools and technologies used:
+
+##### [NodeJS](https://nodejs.org/en/) for back-end.
+
+##### [React](https://reactjs.org/) for front-end.
+
+##### [Video](https://www.youtube.com/watch?v=9S-mphgE5fA) referered to integrate Redis and Node.
+
+##### [Draw.io](https://www.draw.io) to create diagrams.
+
+##### [mLabs](https://mlab.com/) used to store sessions in MongoDB.
 
 
 
