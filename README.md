@@ -90,7 +90,8 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 * Integrated GO Data Service API.
 * GO program setup and client connectivity.
 * Front-end in React finished.
->Number of meeting hours this week: 3
+>Agenda: Design Architecture, Functional Split, sharding, Replication stratgy.
+>(Number of meeting hours this week: 3)
 
 ## Week 4:
 * UI Improvements.
