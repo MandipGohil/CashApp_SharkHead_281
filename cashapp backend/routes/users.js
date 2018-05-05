@@ -3,6 +3,7 @@ var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
 const saltRounds = 5;
+var axios=require('axios');
 //const redis = require('redis');
 //var cors = require('cors');
 var mongoose = require('mongoose');
@@ -73,24 +74,51 @@ router.post('/signup', function(req,res)
 
   
   console.log("Parameters taken successfully");
-  var length=newusers.password.length;
-  newusers.save(function(err,user)
-{
-  
-  if(err)
-  {
+  let apiPayload={
+    Key:req.body.email_address,
+    Value:{
+      password:req.body.password,
+      username:req.body.username,
+      debitcard:req.body.debitcard
+
+  }
+}
+//console.log(apiPayload.ID);
+//console.log(apiPayload.Value);
+console.log(apiPayload);
+let GoUrl="http://localhost:9000/redis_set"
+
+axios.post(GoUrl,apiPayload)
+.then((result)=>{
+  console.log("Go API hit");
+  if(!res){
     console.log(err);
-    console.log("Error received from ")
-    result="Signup unsuccessful";
-    res.json(result);
+    res.json("Signup Unsuccessful");
   }
   else{
-    console.log("Received from createUser method");
-     var result="Signup Successful";
-    res.json(result);
-    
+    res.json("Signup Successful");
   }
 })
+})
+
+  //var length=newusers.password.length;
+  //newusers.save(function(err,user)
+//{
+  
+  //if(err)
+ // {
+   // console.log(err);
+    //console.log("Error received from ")
+    //result="Signup unsuccessful";
+    //res.json(result);
+ // }
+ // else{
+   // console.log("Received from createUser method");
+    // var result="Signup Successful";
+    //res.json(result);
+    
+  //}
+//})
   
   //newusers.save(function(err, inserteduser)
 //{
@@ -116,7 +144,7 @@ router.post('/signup', function(req,res)
   
 
 
-});
+
 
 
 
