@@ -39,8 +39,8 @@ router.post('/addmoney', function (req, res) {
 
                 apiPayload.Value = {
                     ...result.data.Value,
-                    balance: req.body.amount
-                }
+                    balance: parseInt(req.body.amount) + parseInt(result.data.Value.balance)
+                };
                 console.log(apiPayload);
                 let GoUrl = "http://52.53.126.123:3000/redis_set";
 
@@ -79,7 +79,11 @@ router.post('/paymoney', function (req, res) {
 //console.log(apiPayload.ID);
 //console.log(apiPayload.Value);
 //         console.log(apiPayload);
+
         let GoUrl = "http://52.53.126.123:3000/redis_get";
+        if (req.body.Name === req.session.email) {
+            res.json("Payment Posted unsuccessfully");
+        }
 
         axios.post(GoUrl, apiPayload)
             .then((result) => {
@@ -95,21 +99,22 @@ router.post('/paymoney', function (req, res) {
                 };
                 let GoUrl = "http://52.53.126.123:3000/redis_get";
 
-                axios.post(GoUrl, apiPayload)
+                axios.post(GoUrl, apiPayload2)
                     .then((result) => {
                         console.log(result.data);
 
                         let givenTo = result.data;
 
                         if (givenBy.Value.balance > 0) {
-                            if (req.body.amount > givenBy.Value.balance) {
+                            console.log("aaj1");
+                            if (parseInt(req.body.amount) > parseInt(givenBy.Value.balance)) {
                                 let GoUrl = "http://52.53.126.123:3000/redis_set";
 
                                 let saveGiveTo = {
-                                    Key : givenTo.Key,
+                                    Key: givenTo.Key,
                                     Value: {
                                         ...givenTo.Value,
-                                        balance: givenTo.Value.balance + req.body.amount
+                                        balance: parseInt(givenTo.Value.balance) + parseInt(req.body.amount)
                                     }
                                 };
                                 axios.post(GoUrl, saveGiveTo)
@@ -121,17 +126,17 @@ router.post('/paymoney', function (req, res) {
                                 let GoUrl = "http://52.53.126.123:3000/redis_set";
 
                                 let saveGiveBy = {
-                                    Key : givenBy.Key,
+                                    Key: givenBy.Key,
                                     Value: {
                                         ...givenBy.Value,
-                                        balance: givenBy.Value.balance - req.body.amount
+                                        balance: parseInt(givenBy.Value.balance) - parseInt(req.body.amount)
                                     }
                                 };
                                 let saveGiveTo = {
-                                    Key : givenTo.Key,
+                                    Key: givenTo.Key,
                                     Value: {
                                         ...givenTo.Value,
-                                        balance: givenTo.Value.balance + req.body.amount
+                                        balance: parseInt(givenTo.Value.balance) + parseInt(req.body.amount)
                                     }
                                 };
                                 axios.post(GoUrl, saveGiveTo)
@@ -149,10 +154,10 @@ router.post('/paymoney', function (req, res) {
                             let GoUrl = "http://52.53.126.123:3000/redis_set";
 
                             let saveGiveTo = {
-                                Key : givenTo.Key,
+                                Key: givenTo.Key,
                                 Value: {
                                     ...givenTo.Value,
-                                    balance: givenTo.Value.balance + req.body.amount
+                                    balance: parseInt(givenTo.Value.balance) + parseInt(req.body.amount)
                                 }
                             };
                             axios.post(GoUrl, saveGiveTo)
