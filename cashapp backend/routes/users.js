@@ -3,7 +3,8 @@ var router = express.Router();
 var mysql = require('mysql');
 var bcrypt = require('bcrypt');
 const saltRounds = 5;
-const redis = require('redis');
+var axios=require('axios');
+//const redis = require('redis');
 //var cors = require('cors');
 var mongoose = require('mongoose');
 //require('./passport')(passport);
@@ -13,8 +14,8 @@ var passport = require('passport')
 
 var users=require('../models/users.js');
 var user_details=require('../models/userdetails.js');
-var mongoSessionURL = 'mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
-var db='mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var mongoSessionURL = 'mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
+var db='mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 mongoose.Promise=global.Promise;
 mongoose.connect(db,function(err)
 {
@@ -27,7 +28,7 @@ mongoose.connect(db,function(err)
   }
 })
 
-//get method to get all user details 
+//get method to get all user details
 router.get('/userdetails',function(req,res)
 {
   if(req.session.email)
@@ -53,43 +54,62 @@ router.get('/userdetails',function(req,res)
 )
 
 
-
-
-
-
-
-
-
 //signup API
 router.post('/signup', function(req,res)
 {
   console.log("Signup API called");
-  var newusers=new users
-    newusers.email_address = req.body.email_address,
-    newusers.username= req.body.username,
-    newusers.password= req.body.password
-    
+  var newusers=new users;
+    newusers.email_address = req.body.email_address;
+    newusers.username= req.body.username;
+    newusers.password= req.body.password;
+    newusers.debitcard=req.body.debitcard;
 
-  
+
+
   console.log("Parameters taken successfully");
-  var length=newusers.password.length;
-  newusers.save(function(err,user)
-{
-  
-  if(err)
-  {
-    console.log("Error received from ")
-    result="Signup unsuccessful";
-    res.json(result);
+  let apiPayload={
+    Key:req.body.email_address,
+    Value:{
+      password:req.body.password,
+      username:req.body.username,
+      debitcard:req.body.debitcard
+
   }
-  else{
-    console.log("Received from createUser method");
-     var result="Signup Successful";
-    res.json(result);
-    
-  }
+}
+//console.log(apiPayload.ID);
+//console.log(apiPayload.Value);
+console.log(apiPayload);
+let GoUrl="http://localhost:3010/redis_set"
+
+axios.post(GoUrl,apiPayload)
+.catch((err)=>{
+  res.json("Signup Unsuccessful");
 })
-  
+.then((result)=>{
+    console.log("Go API hit");
+    res.json("Signup Successful");
+})
+})
+
+  //var length=newusers.password.length;
+  //newusers.save(function(err,user)
+//{
+
+  //if(err)
+ // {
+   // console.log(err);
+    //console.log("Error received from ")
+    //result="Signup unsuccessful";
+    //res.json(result);
+ // }
+ // else{
+   // console.log("Received from createUser method");
+    // var result="Signup Successful";
+    //res.json(result);
+
+  //}
+//})
+
   //newusers.save(function(err, inserteduser)
 //{
  // if(err)
@@ -106,17 +126,10 @@ router.post('/signup', function(req,res)
   //  res.json("Password too short")
  // }
   //else{
-    
+
   //  res.json("Signup Successful");
  // }
 //})
-  
-  
-
-
-});
-
-
 
 
 //login API
@@ -125,7 +138,7 @@ router.post('/login', function(req,res)
   console.log("Login API called");
   var newusers1=new users;
   newusers1.email_address = req.body.email_address;
-  newusers1.username= req.body.username;
+
   newusers1.password= req.body.password;
   console.log(req.body.email_address);
   console.log(req.body.password);
@@ -148,27 +161,27 @@ else{
   {
     res.json("Please enter correct credentials");
   }
-  
+
   else if(users.password===req.body.password)
   {
     console.log(users);
     console.log("Login Successful")
     req.session.email=newusers1.email_address;
     res.json("Login Successful");
-   
+
     console.log(req.session.email);
   }
   else{
     res.json("Please enter correct credentials");
   }
-  
+
 })
 }
 
   //console.log(email);
   //console.log(password1);
-  
-  
+
+
 }
 );
 
@@ -192,7 +205,7 @@ passwordField:'password'
   console.log(username);
   console.log(password);
   var query={'email_address':username}
- 
+
   users.findOne(query)
   .exec(function(err,user)
 {
@@ -202,20 +215,20 @@ passwordField:'password'
   if (!user) {
     return done(null, false, { message: 'Incorrect username.' });
   }
-  
+
   else if(user.password===password)
   {
     console.log(user);
     //console.log("Login Successful")
     //req.session.email=newusers1.email_address;
     return done(null, user);
-   
+
     //console.log(req.session.email);
   }
   else{
     return done(null,false)
   }
-  
+
 })
 
 }));
@@ -239,31 +252,31 @@ passwordField:'password'
 //));
 
 
-router.post('/login1',function(req,res){ 
+router.post('/login1',function(req,res){
   passport.authenticate('local', function(err, user, info) {
     console.log("Returned user in login api");
     console.log(user);
     console.log(user.email_address);
-    
 
-    if (err) 
-    { 
-      throw err; 
+
+    if (err)
+    {
+      throw err;
     }
-    if (!user) 
-    { 
+    if (!user)
+    {
        res.json("Please enter correct credentials");
    }
     else{
-      
+
         req.session.email=user.email_address;
          res.json("Login Successful");
-      
-      
+
+
       //res.json();
-      
+
     }
-  
+
 
 })(req,res);
 }
@@ -280,12 +293,12 @@ router.get('/checklogin', function(req,res)
 
     console.log("Already Logged in");
     res.json("Already Logged in");
-    
+
   }
   else{
     console.log("Plz Log in");
     res.json("Please Login in");
-    
+
   }
   });
 

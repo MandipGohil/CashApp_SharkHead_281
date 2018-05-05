@@ -17,12 +17,9 @@ class Welcome extends Component {
     
     state = {
         result:[],
-        relevantproj:[],
         projname:[],
         projdetails:[],
         xyz:'',
-        bids:[],
-        
         
         
         image:this.props.image,
@@ -32,7 +29,7 @@ class Welcome extends Component {
 
     componentWillMount(){
         
-        API.getselfProjects(this.state)
+        API.getselfProjects()
         .then(data=>{
             console.log(data);  //result received
             this.state.result=data;
@@ -41,39 +38,14 @@ class Welcome extends Component {
             this.setState({
                 result:data
        });
+            
+            //console.log(this.state.proj_name);
+            //console.log(data);
+            //console.log(data[0]);
+            //console.log(data[1]);
     
         console.log(this.state.result);
     });
-
-    API.getbids()
-    .then(data=>
-        {
-        console.log(data);  //result received
-        this.state.bids=data;
-        console.log(this.state.bids); //assigned to an array in state
-        console.log(this.state.bids.length); //found the length of the 
-        this.setState({
-            bids:data
-   });
-
-    console.log(this.state.bids);
-});
-   
-   // API.getRelevantProjects()
-  //  .then(data=>{
-   //     console.log(data);  //result received
-   //     this.state.relevantproj=data;
-   //     console.log(this.state.relevantproj); //assigned to an array in state
-   //     console.log(this.state.relevantproj.length); //found the length of the 
-   //     this.setState({
-   //         relevantproj:data
-  // });
-
-  //  console.log(this.state.result);
-//});
-
-
-    
         API.getProfileImage()
         .then(result=>{
            
@@ -116,20 +88,6 @@ class Welcome extends Component {
 
          )
           });
-
-          const projectBids=this.state.bids.map((bids,index)=>{
-            return(
-                   <tr key={index+1}>
-                   <td className="text-left">{index+1}</td>
-                   <td className="text-left">{bids.proj_id}</td>
-                   <td className="text-left">{bids.bid_amt}</td>
-                   <td className="text-left">{bids.bid_days}</td>
-                   
-                   </tr>
-                   
-   
-            )
-             });
         return(
             
              
@@ -186,8 +144,6 @@ xyz: event.target.value
                                 onClick={() => this.props.handleSubmit4(this.state)}>  
                                 Search
                             </button>
-
-                            
                             </div>
                             </div>
                     
@@ -217,28 +173,6 @@ xyz: event.target.value
 <br/>
 
                     <br/>
-                    <div>
-                        <br/>
-                        <h4>Your Bids</h4>
-                    <table className="table table-sm table-inverse table-hover">
-<thead>
-    <tr>
-        <th>#</th>
-        <th>Project ID</th>
-        <th>Bid Amount</th>
-        <th>Bid Days</th>
-       
-</tr>
-    </thead>
-    <tbody>
-        {projectBids}
-        </tbody>
-
-        
-    </table>
-
-
-                        </div>
                     
                 </div>
                

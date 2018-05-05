@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import Image from './freelancer.jpg';
+import Image from './cashapp.png';
 
 class Navbar_Welcome extends Component {
   static propTypes = {
@@ -31,30 +31,18 @@ componentWillMount(){
         return (
             <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
 
-  <a className="navbar-brand" href="http://54.183.162.168:3001/"><img src={Image}height ='60' width='130'></img></a>
+  <a className="navbar-brand" href="http://localhost:3001/"><img src={Image}height ='60' width='130'></img></a>
 
   
   <ul className="navbar-nav">
+   
+    
+    
     <li className="nav-item">
-    <a className="nav-link" href="http://54.183.162.168:3001/profile">Profile</a>
+      <a className="nav-link" href="http://localhost:3001/account">My Balance</a>
     </li>
     <li className="nav-item">
-      <a className="nav-link" href="http://54.183.162.168:3001/browseprojects">Browse Projects</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://54.183.162.168:3001/postproject">Post Project</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://54.183.162.168:3001/welcome">My Projects</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://54.183.162.168:3001/relevantprojects">Relevant Projects</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://54.183.162.168:3001/assignedprojects">Assigned Projects</a>
-    </li>
-    <li className="nav-item">
-      <a className="nav-link" href="http://54.183.162.168:3001/account">Account</a>
+      <a className="nav-link" href="http://localhost:3001/account">Account</a>
     </li>
     
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

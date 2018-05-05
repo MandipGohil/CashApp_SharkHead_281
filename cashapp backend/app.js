@@ -17,14 +17,14 @@ var passport = require('passport')
   , LocalStrategy = require('passport-local').Strategy;
 
 //var passport1=require('./routes/passport');
-var mongoURL = 'mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var mongoURL = 'mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 
 var mongo=require('mongodb');
-var mongoSessionURL = 'mongodb://shahakshat:Axtshah14@ds223509.mlab.com:23509/freelancer';
+var mongoSessionURL = 'mongodb://cashapp:cashapp@ds215380.mlab.com:15380/cashapp';
 
 var cors = require('cors');
 var corsOptions = {
-  origin: 'http://54.183.162.168:3001',
+  origin: 'http://localhost:3001',
   credentials: true,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }

@@ -20,13 +20,8 @@ import Navbar_Welcome from './Navbar_Welcome';
 import Footer from './Footer';
 import ParticularProject from './ParticularProject';
 import BrowseProjects from "./BrowseProjects";
-import AssignedProjects from "./AssignedProjects";
-import BroseProjects from "./BroseProjects";
-import RelevantProjects from "./Relevant_Projects";
 import DetailedProjectView from "./DetailedProjectView";
-import AssignedProjectView from "./AssignedProjectView";
 import Image from './axt_profile.JPG';
-
 import '../App.css';
 import PieChart from 'react-simple-pie-chart';
 
@@ -45,19 +40,6 @@ class NewerHomePage extends Component {
 
     };
     componentWillMount(){
-        //API.checklogin()
-        //.then((result)=>
-        //{
-          //  if(result==="Already Logged in")
-          //  {
-          //      this.props.history.push("/welcome"); 
-          //  }
-            
-          //  else{
-          //      this.props.history.push("/login");
-          //  }
-
-       // })
         API.getBalance()
         .then(bal=>{
             console.log(bal);
@@ -102,7 +84,18 @@ class NewerHomePage extends Component {
 
    /* componentDidMount()
     {
-        A
+        API.checklogin()
+        .then((result)=>
+        {
+            if(result==="Already Logged in")
+            {
+                this.props.history.push("/welcome");
+            }
+            else{
+                this.props.history.push("/");
+            }
+
+        })
     
     }*/
  ////handler used for Login
@@ -123,7 +116,7 @@ class NewerHomePage extends Component {
                     console.log("states changed");
                     //window.location.href="http://localhost:3001/welcome";
                     //window.location.replace="/welcome";
-                    this.props.history.push("/welcome");
+                    this.props.history.push("/account");
                 
                 } 
                 else if (result === "Please fill out fields") {
@@ -140,7 +133,7 @@ class NewerHomePage extends Component {
                         isLoggedIn: false,
                         message: "Please enter correct credentials"
                     });
-                    this.props.history.push("/login");
+                    this.props.history.push("/");
                 }
                     else
                     {
@@ -155,8 +148,7 @@ class NewerHomePage extends Component {
             )};
             //handler used for Signup
             handleSubmit1 = (userdata) => {  
-                console.log("request for signup"); 
-                console.log(userdata);   //data from Login is passed here and taken in userdata parameter.
+                console.log("request for signup");    //data from Login is passed here and taken in userdata parameter.
                 API.doSignup(userdata)            //this statement passes userdata parameters to API which is used for connectivity to backend
                     .then((result) => {              // the following statements are executed when there is return value from nodejs
                         if (result === "Signup Successful") { 
@@ -167,7 +159,7 @@ class NewerHomePage extends Component {
                                 username: userdata.username
                             });
                             console.log("yeaah its signup successfull..")         
-                            this.props.history.push("/");
+                            this.props.history.push("/login");
                         } 
                         else if (result === "Signup unsuccessful") {
                             this.setState({
@@ -316,14 +308,6 @@ class NewerHomePage extends Component {
                     console.log(userdata);
                     localStorage.setItem('id',userdata);
                     this.props.history.push("/detailedprojectview/"+userdata)
-                }
-
-                projectsubmit12=(userdata)=>
-                {
-                    console.log("Hit project details handler")
-                    console.log(userdata);
-                    localStorage.setItem('id',userdata);
-                    this.props.history.push("/assignedprojectview/"+userdata)
                 }
 
                 
@@ -501,16 +485,6 @@ class NewerHomePage extends Component {
                                                     }
                                                        
                                                         )}; 
-
-                                                        get2projects=()=>{
-                                                            console.log("Retrieving 2nd page of projects");
-                                                            this.props.history.push('/broseprojects');
-                                                        }
-
-                                                        get1projects=()=>{
-                                                            console.log("Retrieving 1st page of projects")
-                                                            this.props.history.push('/browseprojects');
-                                                        }
                 
     render() {
         return (
@@ -528,7 +502,6 @@ class NewerHomePage extends Component {
 
                 <Route exact path="/login" render={() => (
                     <div>
-                        <Message message={this.state.message}/>
                         <Login handleSubmit={this.handleSubmit}/>
                         
                         
@@ -574,37 +547,7 @@ class NewerHomePage extends Component {
                         logout={this.logout}/>
                         <Message message={this.state.message}/>
                         <Account/>
-                        <br/>
-                        <br/>
                         
-                        <h4>Pie Chart Representation:</h4>
-                        <br/>
-                        <br/>
-                        <div className="row justify-content-md-center">
-                        <div height="100px" className=" center col-md-3">
-                        <PieChart
-                        
-                         
-                       
-  slices={[
-    { 
-        title:"incoming",
-      color: '#3AA2EA',
-      value: this.state.incoming,
-      
-    },
-    {
-        title:"outgoing", 
-      color: '#5DEA3A',
-      value: -this.state.outgoing,
-    },
-  ]}
-/>
-<button type="button" className="byn btn-primary"></button>:Represents Incoming Total
-<br/>
-<button type="button" className="byn btn-success"></button>:Represents Outgoing Total
-</div>
-</div>
                         
                     </div>
                 )}/>
@@ -641,44 +584,7 @@ class NewerHomePage extends Component {
                         <Navbar_Welcome email_address={this.state.email_address}
                         logout={this.logout}/>
                         <BrowseProjects handleSubmit4={this.handleSubmit4}
-                        projectsubmit={this.projectsubmit}
-                        get2projects={this.get2projects}
-                        />
-                        
-                    </div>
-                )}/>
-
-                 <Route exact path="/assignedprojects" render={() => (
-                    <div>
-                        <Navbar_Welcome email_address={this.state.email_address}
-                        logout={this.logout}/>
-                        <AssignedProjects handleSubmit4={this.handleSubmit4}
-                        projectsubmit={this.projectsubmit}
-                        projectsubmit12={this.projectsubmit12}
-                        get2projects={this.get2projects}
-                        />
-                        
-                    </div>
-                )}/>
-                <Route exact path="/broseprojects" render={() => (
-                    <div>
-                        <Navbar_Welcome email_address={this.state.email_address}
-                        logout={this.logout}/>
-                        <BroseProjects handleSubmit4={this.handleSubmit4}
-                        projectsubmit={this.projectsubmit}
-                        get1projects={this.get1projects}
-                        />
-                        
-                    </div>
-                )}/>
-                <Route exact path="/relevantprojects" render={() => (
-                    <div>
-                        <Navbar_Welcome email_address={this.state.email_address}
-                        logout={this.logout}/>
-                        <RelevantProjects handleSubmit4={this.handleSubmit4}
-                        projectsubmit={this.projectsubmit}
-                        get1projects={this.get1projects}
-                        />
+                        projectsubmit={this.projectsubmit}/>
                         
                     </div>
                 )}/>
@@ -704,24 +610,6 @@ class NewerHomePage extends Component {
                         <DetailedProjectView AssignProject={this.AssignProject}/>
                         
                     </div>
-                    
-                )}/>
-
-                 <Route exact path="/assignedprojectview/:project_id" render={() => (
-                    <div>
-                        <Navbar_Welcome email_address={this.state.email_address}
-                        logout={this.logout}/>
-                        <br/>
-                        <br/>
-                        
-                        <AssignedProjectView 
-                        
-                        AssignProject={this.AssignProject}
-                        
-                        />
-                        
-                    </div>
-                    
                 )}/>
                  <Route exact path="/particularproject" render={() => (
                     <div>
