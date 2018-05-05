@@ -22,7 +22,7 @@ Cash App is a seamless way to send money to anyone using just their email addres
 > It consists of various modules such as Sign up, Log in, Add money, Withdraw money and Send money. The users are able to choose their unique Cash App id on registration.
 
 ## Project Architecture Diagram:
-<img src="https://raw.githubusercontent.com/nguyensjsu/team281-sharkhead/master/Design/Design%20Architecture.jpg?token=AiMCxMazM_qtTehiIfeAZQlpN-T0cAeHks5a9iNdwA%3D%3D">
+<img src="https://raw.githubusercontent.com/nguyensjsu/team281-sharkhead/master/Design/Design%20Architecture.jpg?token=AiMCxOPk_DlQ4he9S2NaSvCWzqZYhAnLks5a9llXwA%3D%3D">
 
 
 > The front-end is developed in React which is hosted on Heroku. The back-end developed using NodeJS is divided in two ec2 instances, to split the functionalities. The login and signup functionality runs on one node and the transaction in another. Each of the functionalities are connected to each member's GO API which allows it to interact with the redis database in each cluster. The sessions are maintained in MongoDB on mLabs. Load balancers are added to make the system scalable.
