@@ -79,8 +79,8 @@ Through the use of said Replica-Sets MongoDB also achieves the partition toleran
 * Finished wrapper API individually for database clusters.
 * Reviewed as a team - Feasible timeline of tasks and responsibilities.
 * Started coding for back-end.
->Number of meeting hours this week: 2
 >Agenda: To select the Application. Talk about API Document. Make Kanban Board to get the project done in desire time line.
+>(Number of meeting hours this week: 2)
 ## Week 3:
 * Created a design architecture.
 * Discussed how the functionalities will split.
