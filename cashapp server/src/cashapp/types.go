@@ -1,15 +1,13 @@
 package main
 
-type gumballMachine struct {
-	Id            int
-	CountGumballs int
-	ModelNumber   string
-	SerialNumber  string
+type redis_set_req struct {
+	Key   string
+	Value map[string]interface {}
 }
-
-type order struct {
-	Id          string
-	OrderStatus string
+type redis_get_req struct {
+	Key string
 }
-
-var orders map[string]order
+type redis_resp struct {
+	Key   string
+	Value map[string]string
+}
